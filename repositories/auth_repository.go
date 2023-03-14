@@ -8,47 +8,47 @@ import (
 )
 
 type AuthRepository interface {
-	Create(customer *entities.Customer) error
-	GetById(id uuid.UUID) (*entities.Customer, error)
-	GetWhere(param string, email string) (*entities.Customer, error)
-	Update(customer *entities.Customer) error
-	Delete(customer *entities.Customer) error
+	Create(Merchant *entities.Merchant) error
+	GetById(id uuid.UUID) (*entities.Merchant, error)
+	GetWhere(param string, email string) (*entities.Merchant, error)
+	Update(Merchant *entities.Merchant) error
+	Delete(Merchant *entities.Merchant) error
 }
 
 type authRepositoryImpl struct {
 	db *gorm.DB
 }
 
-func NewCustomerRepository(db *gorm.DB) AuthRepository {
+func NewMerchantRepository(db *gorm.DB) AuthRepository {
 	return &authRepositoryImpl{db}
 }
 
-func (r *authRepositoryImpl) Create(customer *entities.Customer) error {
-	return r.db.Create(&customer).Error
+func (r *authRepositoryImpl) Create(Merchant *entities.Merchant) error {
+	return r.db.Create(&Merchant).Error
 }
 
-func (r *authRepositoryImpl) GetById(id uuid.UUID) (*entities.Customer, error) {
-	var customer entities.Customer
-	if err := r.db.First(&customer, id).Error; err != nil {
+func (r *authRepositoryImpl) GetById(id uuid.UUID) (*entities.Merchant, error) {
+	var Merchant entities.Merchant
+	if err := r.db.First(&Merchant, id).Error; err != nil {
 		return nil, err
 	}
 
-	return &customer, nil
+	return &Merchant, nil
 }
 
-func (r *authRepositoryImpl) GetWhere(param string, args string) (*entities.Customer, error) {
-	var customer entities.Customer
-	if err := r.db.Where(param+" = ?", args).First(&customer).Error; err != nil {
+func (r *authRepositoryImpl) GetWhere(param string, args string) (*entities.Merchant, error) {
+	var Merchant entities.Merchant
+	if err := r.db.Where(param+" = ?", args).First(&Merchant).Error; err != nil {
 		return nil, err
 	}
 
-	return &customer, nil
+	return &Merchant, nil
 }
 
-func (r *authRepositoryImpl) Update(customer *entities.Customer) error {
-	return r.db.Save(customer).Error
+func (r *authRepositoryImpl) Update(Merchant *entities.Merchant) error {
+	return r.db.Save(Merchant).Error
 }
 
-func (r *authRepositoryImpl) Delete(customer *entities.Customer) error {
-	return r.db.Delete(customer).Error
+func (r *authRepositoryImpl) Delete(Merchant *entities.Merchant) error {
+	return r.db.Delete(Merchant).Error
 }

@@ -9,19 +9,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type CustomerHandler interface {
+type MerchantHandler interface {
 	GetMe(ctx *gin.Context)
 }
 
-type customerHandlerImpl struct {
-	svc services.CustomerService
+type MerchantHandlerImpl struct {
+	svc services.MerchantService
 }
 
-func NewCustomerHandler(svc services.CustomerService) *customerHandlerImpl {
-	return &customerHandlerImpl{svc}
+func NewMerchantHandler(svc services.MerchantService) *MerchantHandlerImpl {
+	return &MerchantHandlerImpl{svc}
 }
 
-func (cH *customerHandlerImpl) GetMe(ctx *gin.Context) {
+func (cH *MerchantHandlerImpl) GetMe(ctx *gin.Context) {
 	temp, exist := ctx.Get("currentUser")
 	if !exist {
 		log := response.ErrorLog{
@@ -31,9 +31,9 @@ func (cH *customerHandlerImpl) GetMe(ctx *gin.Context) {
 		response.Error(ctx, http.StatusNotFound, "Key error", log)
 	}
 
-	user := temp.(jwtx.CustomerClaims)
+	user := temp.(jwtx.MerchantClaims)
 
-	userResp, err := cH.svc.GetCustomer(user.ID)
+	userResp, err := cH.svc.GetMerchant(user.ID)
 	if err != nil {
 		log := response.ErrorLog{
 			Field:   "ID",

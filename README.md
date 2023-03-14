@@ -24,17 +24,17 @@ The following endpoints are available through
 `https://mirzahlm.aenzt.tech/`
 
 ### Authentication
-**Description** : Customer account authentication that includes registration, login, and email verification
+**Description** : Merchant account authentication that includes registration, login, and email verification
 
 #### POST `{url}/auth/register`
 **Parameters**
 | Parameter        | Type   | Required | Description                                                     |
 |------------------|--------|----------|-----------------------------------------------------------------|
-| name             | string | YES      | Customer full name                                              |
-| email            | string | YES      | Customer Customer email (should be a valid email)                          |
-| password         | string | YES      | Customer Account Password (should be at least 8 character long) |
+| name             | string | YES      | Merchant full name                                              |
+| email            | string | YES      | Merchant Merchant email (should be a valid email)                          |
+| password         | string | YES      | Merchant Account Password (should be at least 8 character long) |
 | password_confirm | string | YES      | The value should be the same as "password" field                |
-| phone_number     | string | YES      | Customer Account phone number (max 15 character long)           |
+| phone_number     | string | YES      | Merchant Account phone number (max 15 character long)           |
 
 **Response**
 ```json
@@ -57,7 +57,7 @@ The following endpoints are available through
     "status": "error",
     "code": 500,
     "message": "Failed to register user",
-    "data": "Error 1062 (23000): Duplicate entry '123456789' for key 'customers.phone_number'"
+    "data": "Error 1062 (23000): Duplicate entry '123456789' for key 'Merchants.phone_number'"
 }
 ```
 
@@ -65,8 +65,8 @@ The following endpoints are available through
 **Parameters**
 | Parameter | Type   | Required | Description                            |
 |-----------|--------|----------|----------------------------------------|
-| email     | string | YES      | Customer registered and verified email |
-| password  | string | YES      | Customer registered Account password   |
+| email     | string | YES      | Merchant registered and verified email |
+| password  | string | YES      | Merchant registered Account password   |
 
 **Response**
 ```json
@@ -89,10 +89,10 @@ The following endpoints are available through
 ## Features
 
 Here is a list of features available in this project :
-* Customer Account Sign-up
-* Customer Account Sign-in
-* Email Verification for Customer Accounts
-* Customer Account Profile Editing
+* Merchant Account Sign-up
+* Merchant Account Sign-in
+* Email Verification for Merchant Accounts
+* Merchant Account Profile Editing
 
 ## Links
 

@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-type Customer struct {
+type Merchant struct {
 	ID               uuid.UUID `gorm:"primaryKey;autoIncrement:false"`
 	Name             string    `gorm:"not null"`
 	Email            string    `gorm:"uniqueIndex;size:320;not null"`
@@ -19,7 +19,7 @@ type Customer struct {
 	UpdatedAt        time.Time `gorm:"autoUpdateTime"`
 }
 
-type CustomerRegister struct {
+type MerchantRegister struct {
 	Name             string `json:"name" binding:"required"`
 	Email            string `json:"email" binding:"required,email"`
 	Password         string `json:"password" binding:"required,min=8"`
@@ -28,12 +28,12 @@ type CustomerRegister struct {
 	VerificationCode string `json:"verification_code"`
 }
 
-type CustomerLogin struct {
+type MerchantLogin struct {
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required"`
 }
 
-type CustomerRequest struct {
+type MerchantRequest struct {
 	Name        string    `json:"name,omitempty"`
 	Email       string    `json:"email,omitempty"`
 	Password    string    `json:"password,omitempty"`
