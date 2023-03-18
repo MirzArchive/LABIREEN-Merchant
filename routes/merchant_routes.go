@@ -7,12 +7,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type CustomerRoutes struct {
+type MerchantRoutes struct {
 	Router          *gin.Engine
-	CustomerHandler handlers.CustomerHandler
+	MerchantHandler handlers.MerchantHandler
 }
 
-func (r *CustomerRoutes) Register() {
+func (r *MerchantRoutes) Register() {
 	merchant := r.Router.Group("merchant")
-	merchant.GET("/profile", middleware.ValidateToken(), r.CustomerHandler.GetMe)
+	merchant.GET("/profile", middleware.ValidateToken(), r.MerchantHandler.GetMe)
 }

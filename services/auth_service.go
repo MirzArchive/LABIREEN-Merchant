@@ -10,9 +10,9 @@ import (
 )
 
 type AuthService interface {
-	RegisterCustomer(merchant entities.CustomerRegister) error
-	LoginCustomer(merchant entities.CustomerLogin) (uuid.UUID, error)
-	VerifyCustomer(email string) error
+	RegisterMerchant(merchant entities.MerchantRegister) error
+	LoginMerchant(merchant entities.MerchantLogin) (uuid.UUID, error)
+	VerifyMerchant(email string) error
 }
 
 type authServiceImpl struct {
@@ -23,7 +23,7 @@ func NewAuthService(repo repositories.AuthRepository) AuthService {
 	return &authServiceImpl{repo}
 }
 
-func (asr *authServiceImpl) RegisterCustomer(merchant entities.CustomerRegister) error {
+func (asr *authServiceImpl) RegisterMerchant(merchant entities.MerchantRegister) error {
 	hashedPassword, err := crypto.HashValue(merchant.Password)
 	if err != nil {
 		return errors.New("failed to encrypt given data")
@@ -50,7 +50,7 @@ func (asr *authServiceImpl) RegisterCustomer(merchant entities.CustomerRegister)
 	return nil
 }
 
-func (asr *authServiceImpl) LoginCustomer(merchant entities.CustomerLogin) (uuid.UUID, error) {
+func (asr *authServiceImpl) LoginMerchant(merchant entities.MerchantLogin) (uuid.UUID, error) {
 	user, err := asr.repo.GetWhere("email", merchant.Email)
 	if err != nil {
 		return uuid.UUID{}, errors.New("user not found")
@@ -67,7 +67,7 @@ func (asr *authServiceImpl) LoginCustomer(merchant entities.CustomerLogin) (uuid
 	return user.ID, nil
 }
 
-func (asr *authServiceImpl) VerifyCustomer(code string) error {
+func (asr *authServiceImpl) VerifyMerchant(code string) error {
 	user, err := asr.repo.GetWhere("verification_code", code)
 	if err != nil {
 		return errors.New("user not found")

@@ -26,7 +26,7 @@ func TestGenerateToken(t *testing.T) {
 	id, _ = uuid.FromBytes([]byte(temp))
 	exp, _ := time.ParseDuration("24h")
 
-	tempToken := jwt.NewWithClaims(jwt.SigningMethodHS256, NewCustomerClaims(id, exp))
+	tempToken := jwt.NewWithClaims(jwt.SigningMethodHS256, NewMerchantClaims(id, exp))
 
 	token, err := tempToken.SignedString([]byte(os.Getenv("SECRET")))
 	if err != nil {

@@ -7,30 +7,30 @@ import (
 	"github.com/google/uuid"
 )
 
-type CustomerService interface {
-	UpdateCustomer(merchant entities.CustomerRequest) error
-	GetCustomer(id uuid.UUID) (entities.CustomerRequest, error)
+type MerchantService interface {
+	UpdateMerchant(merchant entities.MerchantRequest) error
+	GetMerchant(id uuid.UUID) (entities.MerchantRequest, error)
 }
 
-type customerServiceImpl struct {
+type merchantServiceImpl struct {
 	repo repositories.AuthRepository
 }
 
-func NewCustomerService(repo repositories.AuthRepository) CustomerService {
-	return &customerServiceImpl{repo}
+func NewMerchantService(repo repositories.AuthRepository) MerchantService {
+	return &merchantServiceImpl{repo}
 }
 
-func (csr *customerServiceImpl) UpdateCustomer(merchant entities.CustomerRequest) error {
+func (csr *merchantServiceImpl) UpdateMerchant(merchant entities.MerchantRequest) error {
 	return nil
 }
 
-func (csr *customerServiceImpl) GetCustomer(id uuid.UUID) (entities.CustomerRequest, error) {
+func (csr *merchantServiceImpl) GetMerchant(id uuid.UUID) (entities.MerchantRequest, error) {
 	user, err := csr.repo.GetById(id)
 	if err != nil {
-		return entities.CustomerRequest{}, err
+		return entities.MerchantRequest{}, err
 	}
 
-	userResp := entities.CustomerRequest{
+	userResp := entities.MerchantRequest{
 		Name:      user.Name,
 		Email:     user.Email,
 		Password:  user.Password,

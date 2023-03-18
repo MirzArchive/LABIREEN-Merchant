@@ -7,13 +7,13 @@ import (
 	"github.com/google/uuid"
 )
 
-type CustomerClaims struct {
+type MerchantClaims struct {
 	ID uuid.UUID `json:"id"`
 	jwt.RegisteredClaims
 }
 
-func NewCustomerClaims(id uuid.UUID, exp time.Duration) CustomerClaims {
-	return CustomerClaims{
+func NewMerchantClaims(id uuid.UUID, exp time.Duration) MerchantClaims {
+	return MerchantClaims{
 		ID: id,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(exp)),

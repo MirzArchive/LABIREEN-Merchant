@@ -18,7 +18,7 @@ func GenerateToken(id uuid.UUID) (string, error) {
 		exp = time.Hour * 1
 	}
 
-	tempToken := jwt.NewWithClaims(jwt.SigningMethodHS256, NewCustomerClaims(id, exp))
+	tempToken := jwt.NewWithClaims(jwt.SigningMethodHS256, NewMerchantClaims(id, exp))
 
 	token, err := tempToken.SignedString([]byte(os.Getenv("SECRET")))
 	if err != nil {

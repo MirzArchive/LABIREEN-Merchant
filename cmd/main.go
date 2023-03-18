@@ -33,11 +33,11 @@ func main() {
 	}
 
 	emailService := mail.NewGmailSender(os.Getenv("EMAIL_SENDER_NAME"), os.Getenv("EMAIL_SENDER_ADDRESS"), os.Getenv("EMAIL_SENDER_PASSWORD"))
-	authService := services.NewAuthService(repositories.NewCustomerRepository(db))
-	customerService := services.NewCustomerService(repositories.NewCustomerRepository(db))
+	authService := services.NewAuthService(repositories.NewMerchantRepository(db))
+	merchantService := services.NewMerchantService(repositories.NewMerchantRepository(db))
 
 	authHandler := handlers.NewAuthHandler(authService, emailService)
-	customerHandler := handlers.NewCustomerHandler(customerService)
+	merchantHandler := handlers.NewMerchantHandler(merchantService)
 
 	app := gin.Default()
 
@@ -49,11 +49,11 @@ func main() {
 	authRoutes.Register()
 
 	// Register merchant routes
-	customerRoutes := routes.CustomerRoutes{
+	merchantRoutes := routes.MerchantRoutes{
 		Router:          app,
-		CustomerHandler: customerHandler,
+		MerchantHandler: merchantHandler,
 	}
-	customerRoutes.Register()
+	merchantRoutes.Register()
 
 	app.Run("127.0.0.1:55353")
 }
