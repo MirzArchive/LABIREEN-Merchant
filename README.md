@@ -154,6 +154,8 @@ The following endpoints are available through
 }
 ```
 
+For more about API Documentation, please see [here][Postman]
+
 ## Features
 
 Here is a list of features available in this project :
@@ -196,3 +198,4 @@ Yes! We welcome contributions from anyone, under the same terms as the license. 
 [Git Website]: https://git-scm.com/
 [Go Website]: https://go.dev/
 [Postman Website]: https://www.postman.com/
+[Postman]: https://documenter.getpostman.com/view/26384436/2s93JzKfV3
