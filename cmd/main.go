@@ -3,10 +3,10 @@ package main
 import (
 	"labireen-merchant/config"
 	"labireen-merchant/handlers"
+	"labireen-merchant/pkg/mail"
 	"labireen-merchant/repositories"
 	"labireen-merchant/routes"
 	"labireen-merchant/services"
-	"labireen-merchant/utilities/mail"
 	"log"
 	"os"
 
@@ -33,11 +33,11 @@ func main() {
 	}
 
 	emailService := mail.NewGmailSender(os.Getenv("EMAIL_SENDER_NAME"), os.Getenv("EMAIL_SENDER_ADDRESS"), os.Getenv("EMAIL_SENDER_PASSWORD"))
-	authService := services.NewAuthService(repositories.NewMerchantRepository(db))
-	MerchantService := services.NewMerchantService(repositories.NewMerchantRepository(db))
+	authService := services.NewAuthService(repositories.NewCustomerRepository(db))
+	customerService := services.NewCustomerService(repositories.NewCustomerRepository(db))
 
 	authHandler := handlers.NewAuthHandler(authService, emailService)
-	MerchantHandler := handlers.NewMerchantHandler(MerchantService)
+	customerHandler := handlers.NewCustomerHandler(customerService)
 
 	app := gin.Default()
 
@@ -48,12 +48,12 @@ func main() {
 	}
 	authRoutes.Register()
 
-	// Register Merchant routes
-	MerchantRoutes := routes.MerchantRoutes{
+	// Register merchant routes
+	customerRoutes := routes.CustomerRoutes{
 		Router:          app,
-		MerchantHandler: MerchantHandler,
+		CustomerHandler: customerHandler,
 	}
-	MerchantRoutes.Register()
+	customerRoutes.Register()
 
-	app.Run(":" + os.Getenv("PORT"))
+	app.Run("127.0.0.1:55353")
 }

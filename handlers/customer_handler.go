@@ -1,27 +1,27 @@
 package handlers
 
 import (
+	"labireen-merchant/pkg/jwtx"
+	"labireen-merchant/pkg/response"
 	"labireen-merchant/services"
-	"labireen-merchant/utilities/jwtx"
-	"labireen-merchant/utilities/response"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-type MerchantHandler interface {
+type CustomerHandler interface {
 	GetMe(ctx *gin.Context)
 }
 
-type MerchantHandlerImpl struct {
-	svc services.MerchantService
+type customerHandlerImpl struct {
+	svc services.CustomerService
 }
 
-func NewMerchantHandler(svc services.MerchantService) *MerchantHandlerImpl {
-	return &MerchantHandlerImpl{svc}
+func NewCustomerHandler(svc services.CustomerService) *customerHandlerImpl {
+	return &customerHandlerImpl{svc}
 }
 
-func (cH *MerchantHandlerImpl) GetMe(ctx *gin.Context) {
+func (cH *customerHandlerImpl) GetMe(ctx *gin.Context) {
 	temp, exist := ctx.Get("currentUser")
 	if !exist {
 		log := response.ErrorLog{
@@ -31,9 +31,9 @@ func (cH *MerchantHandlerImpl) GetMe(ctx *gin.Context) {
 		response.Error(ctx, http.StatusNotFound, "Key error", log)
 	}
 
-	user := temp.(jwtx.MerchantClaims)
+	user := temp.(jwtx.CustomerClaims)
 
-	userResp, err := cH.svc.GetMerchant(user.ID)
+	userResp, err := cH.svc.GetCustomer(user.ID)
 	if err != nil {
 		log := response.ErrorLog{
 			Field:   "ID",

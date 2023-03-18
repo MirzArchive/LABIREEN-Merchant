@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"labireen-merchant/utilities/jwtx"
-	"labireen-merchant/utilities/response"
+	"labireen-merchant/pkg/jwtx"
+	"labireen-merchant/pkg/response"
 	"net/http"
 	"os"
 	"strings"
@@ -27,7 +27,7 @@ func ValidateToken() gin.HandlerFunc {
 		}
 
 		tokenJwt := authorization[7:]
-		claims := jwtx.MerchantClaims{}
+		claims := jwtx.CustomerClaims{}
 		jwtKey := os.Getenv("SECRET")
 
 		if err := jwtx.DecodeToken(tokenJwt, &claims, jwtKey); err != nil {

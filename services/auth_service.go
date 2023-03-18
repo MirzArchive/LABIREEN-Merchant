@@ -3,16 +3,16 @@ package services
 import (
 	"errors"
 	"labireen-merchant/entities"
+	"labireen-merchant/pkg/crypto"
 	"labireen-merchant/repositories"
-	"labireen-merchant/utilities/crypto"
 
 	"github.com/google/uuid"
 )
 
 type AuthService interface {
-	RegisterMerchant(Merchant entities.MerchantRegister) error
-	LoginMerchant(Merchant entities.MerchantLogin) (uuid.UUID, error)
-	VerifyMerchant(email string) error
+	RegisterCustomer(merchant entities.CustomerRegister) error
+	LoginCustomer(merchant entities.CustomerLogin) (uuid.UUID, error)
+	VerifyCustomer(email string) error
 }
 
 type authServiceImpl struct {
@@ -23,8 +23,8 @@ func NewAuthService(repo repositories.AuthRepository) AuthService {
 	return &authServiceImpl{repo}
 }
 
-func (asr *authServiceImpl) RegisterMerchant(Merchant entities.MerchantRegister) error {
-	hashedPassword, err := crypto.HashValue(Merchant.Password)
+func (asr *authServiceImpl) RegisterCustomer(merchant entities.CustomerRegister) error {
+	hashedPassword, err := crypto.HashValue(merchant.Password)
 	if err != nil {
 		return errors.New("failed to encrypt given data")
 	}
@@ -36,11 +36,10 @@ func (asr *authServiceImpl) RegisterMerchant(Merchant entities.MerchantRegister)
 
 	user := entities.Merchant{
 		ID:               assignID,
-		Name:             Merchant.Name,
-		Email:            Merchant.Email,
+		Name:             merchant.Name,
+		Email:            merchant.Email,
 		Password:         hashedPassword,
-		PhoneNumber:      Merchant.PhoneNumber,
-		VerificationCode: Merchant.VerificationCode,
+		VerificationCode: merchant.VerificationCode,
 	}
 
 	err = asr.repo.Create(&user)
@@ -51,8 +50,8 @@ func (asr *authServiceImpl) RegisterMerchant(Merchant entities.MerchantRegister)
 	return nil
 }
 
-func (asr *authServiceImpl) LoginMerchant(Merchant entities.MerchantLogin) (uuid.UUID, error) {
-	user, err := asr.repo.GetWhere("email", Merchant.Email)
+func (asr *authServiceImpl) LoginCustomer(merchant entities.CustomerLogin) (uuid.UUID, error) {
+	user, err := asr.repo.GetWhere("email", merchant.Email)
 	if err != nil {
 		return uuid.UUID{}, errors.New("user not found")
 	}
@@ -61,14 +60,14 @@ func (asr *authServiceImpl) LoginMerchant(Merchant entities.MerchantLogin) (uuid
 		return uuid.UUID{}, errors.New("user has not verified")
 	}
 
-	if err := crypto.CheckHash(Merchant.Password, user.Password); err != nil {
+	if err := crypto.CheckHash(merchant.Password, user.Password); err != nil {
 		return uuid.UUID{}, errors.New("password is not valid or incorrect")
 	}
 
 	return user.ID, nil
 }
 
-func (asr *authServiceImpl) VerifyMerchant(code string) error {
+func (asr *authServiceImpl) VerifyCustomer(code string) error {
 	user, err := asr.repo.GetWhere("verification_code", code)
 	if err != nil {
 		return errors.New("user not found")

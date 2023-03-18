@@ -7,37 +7,36 @@ import (
 	"github.com/google/uuid"
 )
 
-type MerchantService interface {
-	UpdateMerchant(Merchant entities.MerchantRequest) error
-	GetMerchant(id uuid.UUID) (entities.MerchantRequest, error)
+type CustomerService interface {
+	UpdateCustomer(merchant entities.CustomerRequest) error
+	GetCustomer(id uuid.UUID) (entities.CustomerRequest, error)
 }
 
-type MerchantServiceImpl struct {
+type customerServiceImpl struct {
 	repo repositories.AuthRepository
 }
 
-func NewMerchantService(repo repositories.AuthRepository) MerchantService {
-	return &MerchantServiceImpl{repo}
+func NewCustomerService(repo repositories.AuthRepository) CustomerService {
+	return &customerServiceImpl{repo}
 }
 
-func (csr *MerchantServiceImpl) UpdateMerchant(Merchant entities.MerchantRequest) error {
+func (csr *customerServiceImpl) UpdateCustomer(merchant entities.CustomerRequest) error {
 	return nil
 }
 
-func (csr *MerchantServiceImpl) GetMerchant(id uuid.UUID) (entities.MerchantRequest, error) {
+func (csr *customerServiceImpl) GetCustomer(id uuid.UUID) (entities.CustomerRequest, error) {
 	user, err := csr.repo.GetById(id)
 	if err != nil {
-		return entities.MerchantRequest{}, err
+		return entities.CustomerRequest{}, err
 	}
 
-	userResp := entities.MerchantRequest{
-		Name:        user.Name,
-		Email:       user.Email,
-		Password:    user.Password,
-		PhoneNumber: user.PhoneNumber,
-		Photo:       user.Photo,
-		CreatedAt:   user.CreatedAt,
-		UpdatedAt:   user.UpdatedAt,
+	userResp := entities.CustomerRequest{
+		Name:      user.Name,
+		Email:     user.Email,
+		Password:  user.Password,
+		Photo:     user.Photo,
+		CreatedAt: user.CreatedAt,
+		UpdatedAt: user.UpdatedAt,
 	}
 
 	return userResp, nil

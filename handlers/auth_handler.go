@@ -5,18 +5,18 @@ import (
 	"labireen-merchant/services"
 	"os"
 
-	"labireen-merchant/utilities/crypto"
-	"labireen-merchant/utilities/jwtx"
-	"labireen-merchant/utilities/mail"
-	"labireen-merchant/utilities/response"
+	"labireen-merchant/pkg/crypto"
+	"labireen-merchant/pkg/jwtx"
+	"labireen-merchant/pkg/mail"
+	"labireen-merchant/pkg/response"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 type AuthHandler interface {
-	RegisterMerchant(ctx *gin.Context)
-	LoginMerchant(ctx *gin.Context)
+	RegisterCustomer(ctx *gin.Context)
+	LoginCustomer(ctx *gin.Context)
 	VerifyEmail(ctx *gin.Context)
 }
 
@@ -29,8 +29,8 @@ func NewAuthHandler(svc services.AuthService, ml mail.EmailSender) *authHandlerI
 	return &authHandlerImpl{svc, ml}
 }
 
-func (aH *authHandlerImpl) RegisterMerchant(ctx *gin.Context) {
-	var request entities.MerchantRegister
+func (aH *authHandlerImpl) RegisterCustomer(ctx *gin.Context) {
+	var request entities.CustomerRegister
 	if err := ctx.ShouldBindJSON(&request); err != nil {
 		log := response.ErrorLog{
 			Field:   "request",
@@ -53,7 +53,7 @@ func (aH *authHandlerImpl) RegisterMerchant(ctx *gin.Context) {
 	code := crypto.Encode(request.Email)
 	request.VerificationCode = code
 
-	if err := aH.svc.RegisterMerchant(request); err != nil {
+	if err := aH.svc.RegisterCustomer(request); err != nil {
 		response.Error(ctx, http.StatusInternalServerError, "Failed to register user", err.Error())
 		return
 	}
@@ -72,8 +72,8 @@ func (aH *authHandlerImpl) RegisterMerchant(ctx *gin.Context) {
 	response.Success(ctx, http.StatusOK, "User successfuly created, please check your email for email verification", request)
 }
 
-func (aH *authHandlerImpl) LoginMerchant(ctx *gin.Context) {
-	var request entities.MerchantLogin
+func (aH *authHandlerImpl) LoginCustomer(ctx *gin.Context) {
+	var request entities.CustomerLogin
 	if err := ctx.ShouldBindJSON(&request); err != nil {
 		log := response.ErrorLog{
 			Field:   "request",
@@ -83,9 +83,9 @@ func (aH *authHandlerImpl) LoginMerchant(ctx *gin.Context) {
 		return
 	}
 
-	id, err := aH.svc.LoginMerchant(request)
+	id, err := aH.svc.LoginCustomer(request)
 	if err != nil {
-		response.Error(ctx, http.StatusUnauthorized, "Failed to logged in", err.Error())
+		response.Error(ctx, http.StatusNotFound, "Failed to logged in", err.Error())
 		return
 	}
 
@@ -101,7 +101,7 @@ func (aH *authHandlerImpl) LoginMerchant(ctx *gin.Context) {
 func (aH *authHandlerImpl) VerifyEmail(ctx *gin.Context) {
 	code := ctx.Params.ByName("verification-code")
 
-	if err := aH.svc.VerifyMerchant(code); err != nil {
+	if err := aH.svc.VerifyCustomer(code); err != nil {
 		response.Error(ctx, http.StatusBadRequest, "User verification failed", err.Error())
 		return
 	}
