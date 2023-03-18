@@ -11,8 +11,7 @@ LABIREEN is an acronym of Colaboration and Integration of FILKOM Canteen
 Before starting this project on your local environment, make sure you have [Git][Git Website] and [Go][Go Website] programming language installed.
 
 ```shell
-git clone https://github.com/MirzaHilmi/LABIREEN.git
-cd server/internal/auth
+git clone https://github.com/MirzaHilmi/LABIREEN-Merchant.git
 go run cmd/main.go
 ```
 
@@ -21,7 +20,7 @@ You can now send HTTP requests to your localhost using [Postman][Postman Website
 ## Endpoint Reference
 The following endpoints are available through
 
-`https://mirzahlm.aenzt.tech/` or `http://ed-demonstrated.at.ply.gg:58242`
+`https://merchant.mirzahlm.aenzt.tech/` or `http://ed-demonstrated.at.ply.gg:58242`
 
 ### Authentication
 **Description** : Merchant account authentication that includes registration, login, and email verification
@@ -29,9 +28,9 @@ The following endpoints are available through
 #### POST `{url}/auth/register`
 **Parameters**
 | Parameter        | Type   | Required | Description                                                     |
-|------------------|--------|----------|-----------------------------------------------------------------|
+| ---------------- | ------ | -------- | --------------------------------------------------------------- |
 | name             | string | YES      | Merchant full name                                              |
-| email            | string | YES      | Merchant Merchant email (should be a valid email)                          |
+| email            | string | YES      | Merchant Merchant email (should be a valid email)               |
 | password         | string | YES      | Merchant Account Password (should be at least 8 character long) |
 | password_confirm | string | YES      | The value should be the same as "password" field                |
 | phone_number     | string | YES      | Merchant Account phone number (max 15 character long)           |
@@ -64,7 +63,7 @@ The following endpoints are available through
 #### POST `{url}/auth/login`
 **Parameters**
 | Parameter | Type   | Required | Description                            |
-|-----------|--------|----------|----------------------------------------|
+| --------- | ------ | -------- | -------------------------------------- |
 | email     | string | YES      | Merchant registered and verified email |
 | password  | string | YES      | Merchant registered Account password   |
 
@@ -86,6 +85,75 @@ The following endpoints are available through
     "data": "user has not verified"
 }
 ```
+
+#### GET `{url}/merchant/profile`
+**Parameters Header**
+| Parameter | Type   | Required | Description                                 |
+| --------- | ------ | -------- | ------------------------------------------- |
+| token     | string | YES      | JWT Token obtained from user sign-in before |
+
+**Response**
+```json
+{
+    "status": "success",
+    "code": 200,
+    "message": "success",
+    "data": {
+        "name": "Hello There",
+        "email": "hiiiiii@gmail.com",
+        "password": "im a super crypted password",
+        "created_at": "2023-03-18T08:45:20.922+07:00",
+        "updated_at": "2023-03-18T08:54:00.466+07:00"
+    }
+}
+```
+
+#### POST `{url}/auth/forgotpassword`
+**Parameters**
+| Parameter | Type   | Required | Description           |
+| --------- | ------ | -------- | --------------------- |
+| email     | string | YES      | Registered user email |
+
+**Response**
+```json
+{
+    "status": "success",
+    "code": 200,
+    "message": "Reset password request successfuly created, please check your email",
+    "data": {
+        "ID": "6982508f-1982-491d-8f4f-2d9d17dff20f",
+        "Name": "Dummy Wummies 2",
+        "Email": "hellooow@gmail.com",
+        "Password": "im a super crypted password",
+        "Photo": "",
+        "VerificationCode": "",
+        "Verified": true,
+        "CreatedAt": "2023-03-18T13:49:11.371+07:00",
+        "UpdatedAt": "2023-03-18T13:49:59.681+07:00"
+    }
+}
+```
+
+#### PATCH `{url}/auth/resetpassword/:reset-token`
+**Parameters**
+| Parameter        | Type   | Required | Description                                 |
+| ---------------- | ------ | -------- | ------------------------------------------- |
+| password         | string | YES      | New password that atleast 8 characters long |
+| password_confirm | string | YES      | Should be the same as password field before |
+
+**Response**
+```json
+{
+    "status": "success",
+    "code": 200,
+    "message": "Successfuly change user password",
+    "data": {
+        "password": "aku-reset-passwordnya-ya",
+        "password_confirm": "aku-reset-passwordnya-ya"
+    }
+}
+```
+
 ## Features
 
 Here is a list of features available in this project :
@@ -93,19 +161,20 @@ Here is a list of features available in this project :
 * Merchant Account Sign-in
 * Email Verification for Merchant Accounts
 * Merchant Account Profile Editing
+* Forget Password with email verification
 
 ## Links
 
 - Project Author: https://github.com/MirzaHilmi/
-- Repository: https://github.com/MirzaHilmi/LABIREEN
+- Repository: https://github.com/MirzaHilmi/LABIREEN-Merchant
 - Issue tracker: https://github.com/MirzaHilmi/LABIREEN/issues
   - In case of sensitive bugs like security vulnerabilities, please contact
    exquisitemirza@gmail.com directly instead of using issue tracker. We value your effort
     to improve the security and privacy of this project!
 - Related projects :
   - My other project : 
-    - https://github.com/MirzaHilmi/labireen-merchant
-    - https://github.com/MirzaHilmi/LABIREEN-Merchant
+    - https://github.com/MirzaHilmi/LABIREEN
+    - https://github.com/MirzaHilmi/LABIREEN-Customer
 
 
 ## Licensing

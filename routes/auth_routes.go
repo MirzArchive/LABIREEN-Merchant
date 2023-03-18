@@ -13,7 +13,9 @@ type AuthRoutes struct {
 
 func (r *AuthRoutes) Register() {
 	auth := r.Router.Group("auth")
-	auth.POST("/register", r.AuthHandler.RegisterMerchant)
-	auth.POST("/login", r.AuthHandler.LoginMerchant)
+	auth.POST("/register", r.AuthHandler.Registermerchant)
+	auth.POST("/login", r.AuthHandler.Loginmerchant)
 	auth.GET("/verify/:verification-code", r.AuthHandler.VerifyEmail)
+	auth.POST("/forgotpassword", r.AuthHandler.ForgotPassword)
+	auth.PATCH("/resetpassword/:reset-token", r.AuthHandler.ResetPassword)
 }

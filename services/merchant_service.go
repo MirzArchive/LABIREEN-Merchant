@@ -13,10 +13,10 @@ type MerchantService interface {
 }
 
 type merchantServiceImpl struct {
-	repo repositories.AuthRepository
+	repo repositories.MerchantRepository
 }
 
-func NewMerchantService(repo repositories.AuthRepository) MerchantService {
+func NewMerchantService(repo repositories.MerchantRepository) MerchantService {
 	return &merchantServiceImpl{repo}
 }
 
@@ -33,7 +33,6 @@ func (csr *merchantServiceImpl) GetMerchant(id uuid.UUID) (entities.MerchantRequ
 	userResp := entities.MerchantRequest{
 		Name:      user.Name,
 		Email:     user.Email,
-		Password:  user.Password,
 		Photo:     user.Photo,
 		CreatedAt: user.CreatedAt,
 		UpdatedAt: user.UpdatedAt,
