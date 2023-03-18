@@ -21,7 +21,7 @@ You can now send HTTP requests to your localhost using [Postman][Postman Website
 ## Endpoint Reference
 The following endpoints are available through
 
-`https://mirzahlm.aenzt.tech/` or `http://light-herald.at.ply.gg:55353`
+`https://mirzahlm.aenzt.tech/` or `http://ed-demonstrated.at.ply.gg:58242`
 
 ### Authentication
 **Description** : Merchant account authentication that includes registration, login, and email verification
